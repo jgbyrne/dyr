@@ -1,0 +1,12 @@
+[package]
+name = "dyr"
+version = "0.1.0"
+authors = ["Jack Byrne <jack.byrne@durham.ac.uk>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+fitzroy = {package = "fitzroy", path = "../fitzroy" }
+toml = "0.5"
+serde = { version = "1.0", features = ["derive"] }
