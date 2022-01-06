@@ -57,7 +57,7 @@ impl Manifest {
 
         let tree_model = cfg::TreeModel {
             prior: tree_prior,
-            tips: tree::TreeData::from_tips(tips),
+            data: tree::TreeData::from_tips(tips),
             calibrations: calibrations,
         };
 

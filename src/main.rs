@@ -6,6 +6,7 @@ use std::fs;
 fn main() {
     let manstr = fs::read_to_string("./narrow.toml").unwrap();
     let manifest: manifest::Manifest = toml::from_str(&manstr).unwrap();
-    println!("{:#?}", manifest.build_config());
-
+    let config = manifest.build_config().unwrap();
+    let mcmc = fitzroy::MCMC::new(config);
+    println!("{:?}",mcmc.params.tree.tree);
 }
