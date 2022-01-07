@@ -8,6 +8,7 @@ fn main() {
     let manifest: manifest::Manifest = toml::from_str(&manstr).unwrap();
     let config = manifest.build_config().unwrap();
     let mut mcmc = fitzroy::MCMC::new(&config);
+    println!("{}", fitzroy::tree::write_newick(&mcmc.params.tree.tree, &config.tree.data));
 
     println!("Root Log Likelihood: {}", mcmc.log_likelihood());
 }

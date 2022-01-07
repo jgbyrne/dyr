@@ -1,0 +1,9 @@
+[data]
+traits = "test.nex"
+
+[calibrations]
+Old_English         = [ 950, 1050]
+Latin               = [2100, 2200]
+
+[priors]
+root_age = ["Uniform", [4000, 25000]]
