@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use std::fs;
 
 use fitzroy::*;
+use fitzroy::util::PriorDist;
 
 #[derive(Deserialize, Debug)]
 pub struct MData {
@@ -35,7 +36,7 @@ impl Manifest {
             "Uniform" => {
                 let params = &self.priors.root_age.1;
                 if params.len() != 2 { return Err(()) }
-                cfg::TreePrior::Uniform { root: cfg::PriorDist::Uniform { low: params[0], high: params[1] } }
+                cfg::TreePrior::Uniform { root: PriorDist::Uniform { low: params[0], high: params[1] } }
             },
             _ => unimplemented!(),
         };
@@ -62,18 +63,18 @@ impl Manifest {
         };
 
         let traits_model = cfg::TraitsModel {
-            num_traits: cfg::PriorDist::Reciprocal,
+            num_traits: PriorDist::Reciprocal,
             subst: cfg::SubstitutionModel::BinaryGTR {
-                pi_one: cfg::PriorDist::Uniform { low: 0.0, high: 1.0 }
+                pi_one: PriorDist::Uniform { low: 0.0, high: 1.0 }
             },
-            base: cfg::PriorDist::Exponential { l: 10000.0 }, /* rama */
+            base: PriorDist::Exponential { l: 10000.0 }, /* rama */
             asrv: cfg::ASRV {
                 enabled: true,
-                shape: cfg::PriorDist::Exponential { l: 2.5 },
+                shape: PriorDist::Exponential { l: 2.5 },
             },
             abrv: cfg::ABRV {
                 enabled: true,
-                shape: cfg::PriorDist::Exponential { l: 2.5 },
+                shape: PriorDist::Exponential { l: 2.5 },
             },
         };
 

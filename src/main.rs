@@ -9,6 +9,12 @@ fn main() {
     let config = manifest.build_config().unwrap();
     let mut mcmc = fitzroy::MCMC::new(&config);
     println!("{}", fitzroy::tree::write_newick(&mcmc.params.tree.tree, &config.tree.data));
+    let init = mcmc.last_log_likelihood;
 
-    println!("Root Log Likelihood: {}", mcmc.log_likelihood());
+    for i in 0..1000 {
+        mcmc.step();
+    }
+    println!("First Root Log Likelihood: {}", init);
+    println!("Last  Root Log Likelihood: {}", mcmc.last_log_likelihood);
+
 }
