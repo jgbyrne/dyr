@@ -5,6 +5,8 @@ use std::fs;
 use fitzroy::*;
 use fitzroy::util::PriorDist;
 
+use crate::DyrConfig;
+
 #[derive(Deserialize, Debug)]
 pub struct MData {
     pub traits: String,
@@ -18,14 +20,20 @@ pub struct MPriors {
 }
 
 #[derive(Deserialize, Debug)]
+pub struct MChain {
+    pub steps: usize,
+}
+
+#[derive(Deserialize, Debug)]
 pub struct Manifest {
     pub data: MData,
     pub calibrations: HashMap<String, (f64, f64)>,
     pub priors: MPriors,
+    pub mcmc: MChain,
 }
 
 impl Manifest {
-    pub fn build_config(&self) -> Result<cfg::Configuration, ()> {
+    pub fn build_config(&self) -> Result<DyrConfig, ()> {
         let nexstr = fs::read_to_string(&self.data.traits).unwrap();
         let trait_data = match fitzroy::nexus::parse(&nexstr) {
             Ok(nexus) => { nexus.data.unwrap() },
@@ -35,7 +43,7 @@ impl Manifest {
         let tree_prior = match self.priors.root_age.0.as_ref() {
             "Uniform" => {
                 let params = &self.priors.root_age.1;
-                if params.len() != 2 { return Err(()) }
+                if params.len() != 2 { eprintln!("Uniform prior expects two arguments."); return Err(()) }
                 cfg::TreePrior::Uniform { root: PriorDist::Uniform { low: params[0], high: params[1] } }
             },
             _ => unimplemented!(),
@@ -52,7 +60,7 @@ impl Manifest {
         for (tip, (low, high)) in &self.calibrations {
             match name_ids.get(tip) {
                 Some(id) => calibrations.push((*id, cfg::Calibration { low: *low, high: *high })),
-                None => return Err(()),
+                None => { eprintln!("No such tip: {}", tip); return Err(()) },
             }
         }
 
@@ -78,9 +86,12 @@ impl Manifest {
             },
         };
 
-        Ok(cfg::Configuration {
-            tree: tree_model,
-            traits: traits_model,
+        Ok(DyrConfig {
+            steps: self.mcmc.steps,
+            model: cfg::Configuration {
+                tree: tree_model,
+                traits: traits_model,
+            },
         })
     }
 }
