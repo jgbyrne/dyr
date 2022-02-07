@@ -7,9 +7,9 @@ use std::fs;
 use std::env;
 use std::process;
 
-struct DyrConfig {
-    steps: usize,
-    model: cfg::Configuration,
+pub struct DyrConfig {
+    pub steps: usize,
+    pub model: cfg::Configuration,
 }
 
 fn main() {

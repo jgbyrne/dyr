@@ -68,6 +68,7 @@ impl Manifest {
             prior: tree_prior,
             data: tree::TreeData::from_tips(trait_data.num_traits().unwrap(), tips),
             calibrations: calibrations,
+            constraints: vec![],
         };
 
         let traits_model = cfg::TraitsModel {
