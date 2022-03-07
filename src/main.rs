@@ -33,9 +33,13 @@ fn main() {
 
     for i in 0..config.steps {
         //println!("Step {:?}:", i);
-        mcmc.step();
+        if !mcmc.step() {
+            println!("Step {}: Instability!", i);
+        }
+
         if i % 100 == 0 {
-            println!("Step {}: {}", i ,&mcmc.last_log_likelihood);
+            let log_posterior_likelihood = mcmc.log_posterior_likelihood();
+            println!("Step {}: {} | {}", i ,&mcmc.last_log_likelihood, log_posterior_likelihood);
         }
     }
     println!("First Root Log Likelihood: {}", init);

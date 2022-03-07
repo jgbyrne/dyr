@@ -28,6 +28,7 @@ pub struct MChain {
 pub struct Manifest {
     pub data: MData,
     pub calibrations: HashMap<String, (f64, f64)>,
+    pub constraints: Option<HashMap<String, Vec<String>>>,
     pub priors: MPriors,
     pub mcmc: MChain,
 }
@@ -80,6 +81,7 @@ impl Manifest {
             asrv: cfg::ASRV {
                 enabled: true,
                 shape: PriorDist::Exponential { l: 2.5 },
+                ncats: 4,
             },
             abrv: cfg::ABRV {
                 enabled: true,
