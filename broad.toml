@@ -26,7 +26,8 @@ Old_Church_Slavic   = [ 950, 1050]
 Sogdian             = [1200, 1400]
 
 [priors]
-root_age = ["Uniform", [4000, 25000]]
+#tree = ["Coalescent", [4.0]] 
+tree = ["Uniform", [4000, 25000]]
 
 [mcmc]
-steps = 150000
+steps = 250000

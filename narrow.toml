@@ -17,7 +17,8 @@ Old_West_Norse      = [ 750,  850]
 Old_Church_Slavic   = [ 950, 1050]
 
 [priors]
-root_age = ["Uniform", [4000, 25000]]
+tree = ["Uniform", [4000, 25000]]
+#tree = ["Coalescent", [4.0]]
 
 [mcmc]
 steps = 100000

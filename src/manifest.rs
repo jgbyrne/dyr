@@ -16,7 +16,7 @@ pub type MPrior = (String, Vec<f64>);
 
 #[derive(Deserialize, Debug)]
 pub struct MPriors {
-    pub root_age: MPrior,
+    pub tree: MPrior,
 }
 
 #[derive(Deserialize, Debug)]
@@ -41,11 +41,16 @@ impl Manifest {
             Err(msg) => { eprintln!("{}", msg); return Err(()); },
         };
 
-        let tree_prior = match self.priors.root_age.0.as_ref() {
+        let tree_prior = match self.priors.tree.0.as_ref() {
             "Uniform" => {
-                let params = &self.priors.root_age.1;
+                let params = &self.priors.tree.1;
                 if params.len() != 2 { eprintln!("Uniform prior expects two arguments."); return Err(()) }
                 cfg::TreePrior::Uniform { root: PriorDist::Uniform { low: params[0], high: params[1] } }
+            },
+            "Coalescent" => { 
+                let params = &self.priors.tree.1;
+                if params.len() != 1 { eprintln!("Coalescent prior expects one argument."); return Err(()) }
+                cfg::TreePrior::Coalescent { num_intervals: params[0].round() as usize }
             },
             _ => unimplemented!(),
         };

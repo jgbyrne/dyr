@@ -29,21 +29,23 @@ fn main() {
     println!("{}", fitzroy::tree::write_newick(&mcmc.params.tree.tree, &config.model.tree.data));
     let init = mcmc.last_log_likelihood;
 
-    println!("Initial Params: {:?}", &mcmc.params.traits);
+    println!("Initial Params: {:?} {:?}", &mcmc.params.traits, &mcmc.params.tree.prior);
 
     for i in 0..config.steps {
         //println!("Step {:?}:", i);
         if !mcmc.step() {
+            println!("{}", fitzroy::tree::write_newick(&mcmc.params.tree.tree, &config.model.tree.data));
             println!("Step {}: Instability!", i);
         }
 
         if i % 100 == 0 {
             let log_posterior_likelihood = mcmc.log_posterior_likelihood();
             println!("Step {}: {} | {}", i ,&mcmc.last_log_likelihood, log_posterior_likelihood);
+            mcmc.propose.move_log();
         }
     }
     println!("First Root Log Likelihood: {}", init);
     println!("Last  Root Log Likelihood: {}", mcmc.last_log_likelihood);
-    println!("Final Params: {:?}", &mcmc.params.traits);
+    println!("Final Params: {:?} {:?}", &mcmc.params.traits, &mcmc.params.tree.prior);
     println!("{}", fitzroy::tree::write_newick(&mcmc.params.tree.tree, &config.model.tree.data));
 }
