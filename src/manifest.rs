@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::Deserialize;
 use std::collections::HashMap;
 use std::fs;
 
@@ -19,9 +19,16 @@ pub struct MPriors {
     pub tree: MPrior,
 }
 
+pub fn is_one_hundred() -> usize { 100 }
+pub fn is_false() -> bool { false }
+
 #[derive(Deserialize, Debug)]
 pub struct MChain {
     pub steps: usize,
+    #[serde(default = "is_one_hundred")]
+    pub print: usize,
+    #[serde(default = "is_false")]
+    pub debug: bool,
 }
 
 #[derive(Deserialize, Debug)]
