@@ -63,6 +63,14 @@ fn main() {
                 println!("");
             }
         }
+
+        if (i + 1) % manifest.mcmc.dump == 0 {
+            println!("::: Interim Params (Step {}) :::\n{:?}\n{:?}", i, &mcmc.params.traits, &mcmc.params.tree.prior);
+
+            let interim_tree = fitzroy::tree::write_newick(&mcmc.params.tree.tree, &config.model.tree.data);
+            println!("\n::: Interim Tree (Step {}) :::\n{}", i, interim_tree);
+        }
+
     }
 
     println!("\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");

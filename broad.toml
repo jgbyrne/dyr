@@ -31,3 +31,6 @@ tree = ["Uniform", [4000, 25000]]
 
 [mcmc]
 steps = 250000
+print = 10000
+dump  = 50000
+debug = true

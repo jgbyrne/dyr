@@ -20,6 +20,7 @@ pub struct MPriors {
 }
 
 pub fn is_one_hundred() -> usize { 100 }
+pub fn is_ten_thousand() -> usize { 10_000 }
 pub fn is_false() -> bool { false }
 
 #[derive(Deserialize, Debug)]
@@ -27,6 +28,8 @@ pub struct MChain {
     pub steps: usize,
     #[serde(default = "is_one_hundred")]
     pub print: usize,
+    #[serde(default = "is_ten_thousand")]
+    pub dump: usize,
     #[serde(default = "is_false")]
     pub debug: bool,
 }
