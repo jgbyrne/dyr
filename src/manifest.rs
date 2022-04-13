@@ -92,7 +92,8 @@ impl Manifest {
             subst: cfg::SubstitutionModel::BinaryGTR {
                 pi_one: PriorDist::Uniform { low: 0.0, high: 1.0 }
             },
-            base: PriorDist::Exponential { l: 10000.0 }, /* rama */
+            //base: PriorDist::Exponential { l: 10000.0 }, /* rama */
+            base: PriorDist::Reciprocal,
             asrv: cfg::ASRV {
                 enabled: true,
                 shape: PriorDist::Exponential { l: 2.5 },
