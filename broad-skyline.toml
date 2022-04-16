@@ -63,7 +63,8 @@ clade = ["Baltic", "Slavic"]
 
 [[constraints]]
 name = "West_Norse"
-clade = ["Old_West_Norse", "Icelandic", "Faroese", "Norwegian"]
+clade = ["Icelandic", "Faroese", "Norwegian"]
+ancestor = "Old_West_Norse"
 
 [[constraints]]
 name = "East_Norse"
@@ -75,11 +76,13 @@ clade = ["West_Norse", "East_Norse"]
 
 [[constraints]]
 name = "Anglo"
-clade = ["Old_English", "English"]
+clade = ["English"]
+ancestor = "Old_English"
 
 [[constraints]]
 name = "High_German"
-clade = ["Old_High_German", "German", "Swiss_German", "Luxembourgish"]
+clade = ["German", "Swiss_German", "Luxembourgish"]
+ancestor = "Old_High_German"
 
 [[constraints]]
 name = "West_Germanic"
@@ -102,12 +105,9 @@ name = "Iranian"
 clade = ["Avestan", "Persian_Tajik", "Pashto_Waziri", "Sogdian", "Wakhi", "Baluchi", "Kurdish", "Zazaki", "Shughni", "Sariqoli", "Digor_Ossetic"]
 
 [[constraints]]
-name = "Modern_Indo_Aryan"
-clade = ["Nepali", "Assamese", "Oriya", "Bengali", "Bihari", "Marwari", "Hindi", "Urdu", "Sindhi", "Lahnda", "Panjabi", "Gujarati", "Marathi", "Kashmiri", "Singhalese", "Romani"]
-
-[[constraints]]
 name = "Indo_Aryan"
-clade = ["Vedic_Sanskrit", "Modern_Indo_Aryan"]
+clade = ["Nepali", "Assamese", "Oriya", "Bengali", "Bihari", "Marwari", "Hindi", "Urdu", "Sindhi", "Lahnda", "Panjabi", "Gujarati", "Marathi", "Kashmiri", "Singhalese", "Romani"]
+ancestor = "Vedic_Sanskrit"
 
 [[constraints]]
 name = "Indo_Iranian"
@@ -132,26 +132,21 @@ clade = ["Nuorese", "Cagliari"]
 [[constraints]]
 name = "Romance"
 clade = ["Sardinian", "Continental_Romance"]
-
-[[constraints]]
-name = "Italic"
-clade = ["Romance", "Latin"]
+ancestor = "Latin"
 
 [[constraints]]
 name = "Albanian"
 clade = ["Tosk", "Arvanitika"]
 
 [[constraints]]
-name = "Modern_Armenian"
-clade = ["Eastern_Armenian", "Adapazar"]
-
-[[constraints]]
 name = "Armenian"
-clade = ["Modern_Armenian", "Classical_Armenian"]
+clade = ["Eastern_Armenian", "Adapazar"]
+ancestor = "Classical_Armenian"
 
 [[constraints]]
 name = "Greek"
-clade = ["Ancient_Greek", "Modern_Greek"]
+clade = ["Modern_Greek"]
+ancestor = "Ancient_Greek" 
 
 [[constraints]]
 name = "Brythonic" 
@@ -159,7 +154,8 @@ clade = ["Cornish", "Breton", "Welsh"]
 
 [[constraints]]
 name = "Goidelic"
-clade = ["Old_Irish", "Irish", "Scots_Gaelic"]
+clade = ["Irish", "Scots_Gaelic"]
+ancestor = "Old_Irish"
 
 [[constraints]]
 name = "Celtic"
@@ -167,7 +163,7 @@ clade = ["Brythonic", "Goidelic"]
 
 [[constraints]]
 name = "Italo_Celtic"
-clade = ["Celtic", "Italic"]
+clade = ["Celtic", "Romance"]
 
 
 [priors]

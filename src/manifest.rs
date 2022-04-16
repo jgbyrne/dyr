@@ -99,6 +99,9 @@ impl Manifest {
                         match cons_idxs.get(tag) {
                             Some(con) => {
                                 tip_ids.extend(&built[*con].tips);
+                                if let Some(tip) = built[*con].ancestor {
+                                    tip_ids.push(tip)
+                                }
                             },
                             None => {
                                 eprintln!("Could not understand: {}", tag);
@@ -109,7 +112,18 @@ impl Manifest {
                 }
             }
             cons_idxs.insert(constraint.name.clone(), built.len());
-            built.push(cfg::Constraint::clade_constraint(tips.len(), tip_ids));
+            if let Some(tag) = constraint.ancestor.as_ref() {
+                if let Some(id) = name_ids.get(tag) {
+                    built.push(cfg::Constraint::ancestry_constraint(tips.len(), *id, tip_ids));
+                }
+                else {
+                    eprintln!("No such tip: {}", tag);
+                    return Err(());
+                }
+            } 
+            else {
+                built.push(cfg::Constraint::clade_constraint(tips.len(), tip_ids));
+            }
         }
 
         let tree_model = cfg::TreeModel {
