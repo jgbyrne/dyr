@@ -134,6 +134,10 @@ name = "Romance"
 clade = ["Sardinian", "Continental_Romance"]
 
 [[constraints]]
+name = "Italic"
+clade = ["Romance", "Latin"]
+
+[[constraints]]
 name = "Albanian"
 clade = ["Tosk", "Arvanitika"]
 
@@ -163,7 +167,7 @@ clade = ["Brythonic", "Goidelic"]
 
 [[constraints]]
 name = "Italo_Celtic"
-clade = ["Celtic", "Romance"]
+clade = ["Celtic", "Italic"]
 
 
 [priors]
