@@ -165,12 +165,14 @@ clade = ["Brythonic", "Goidelic"]
 name = "Italo_Celtic"
 clade = ["Celtic", "Romance"]
 
+
 [priors]
-#tree = ["Coalescent", [4.0]] 
-tree = ["Uniform", [4000, 25000]]
+tree = ["Coalescent", [5.0]] 
+#tree = ["Uniform", [4000, 25000]]
 
 [mcmc]
-steps = 250000
-print = 1000
-dump  = 5000
+steps = 5_000_000
+print = 10_000
+dump  = 10_000
 debug = true
+

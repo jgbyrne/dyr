@@ -59,8 +59,10 @@ fn main() {
             let log_posterior_likelihood = mcmc.log_posterior_likelihood();
             println!("Step {:<10}: {:<30} | {:<30}", i ,&mcmc.last_log_likelihood, log_posterior_likelihood);
             if manifest.mcmc.debug {
-                mcmc.propose.move_log();
-                println!("");
+                println!();
+                println!("{}", &mcmc.propose.move_ledger());
+                println!();
+                println!("{}", &mcmc.config.prior_likelihood_ledger(&mcmc.params));
             }
         }
 

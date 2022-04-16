@@ -35,10 +35,18 @@ pub struct MChain {
 }
 
 #[derive(Deserialize, Debug)]
+pub struct MConstraint {
+    pub name: String,
+    pub clade: Vec<String>,
+    pub ancestor: Option<String>,
+}
+
+#[derive(Deserialize, Debug)]
 pub struct Manifest {
     pub data: MData,
     pub calibrations: HashMap<String, (f64, f64)>,
-    pub constraints: Option<HashMap<String, Vec<String>>>,
+    #[serde(default)]
+    pub constraints: Vec<MConstraint>,
     pub priors: MPriors,
     pub mcmc: MChain,
 }
@@ -80,11 +88,35 @@ impl Manifest {
             }
         }
 
+        let mut built: Vec<cfg::Constraint> = vec![];
+        let mut cons_idxs: HashMap<String, usize> = HashMap::new();
+        for constraint in self.constraints.iter() {
+            let mut tip_ids = vec![];
+            for tag in constraint.clade.iter() {
+                match name_ids.get(tag) {
+                    Some(id) => tip_ids.push(*id),
+                    None => { 
+                        match cons_idxs.get(tag) {
+                            Some(con) => {
+                                tip_ids.extend(&built[*con].tips);
+                            },
+                            None => {
+                                eprintln!("Could not understand: {}", tag);
+                                return Err(());
+                            }
+                        }
+                    },
+                }
+            }
+            cons_idxs.insert(constraint.name.clone(), built.len());
+            built.push(cfg::Constraint::clade_constraint(tips.len(), tip_ids));
+        }
+
         let tree_model = cfg::TreeModel {
             prior: tree_prior,
             data: tree::TreeData::from_tips(trait_data.num_traits().unwrap(), tips),
             calibrations: calibrations,
-            constraints: vec![],
+            constraints: built,
         };
 
         let traits_model = cfg::TraitsModel {
