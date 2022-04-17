@@ -48,6 +48,8 @@ fn main() {
 
     println!("\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
 
+    let mut summary = fitzroy::Summary::blank();
+
     for i in 0..config.steps {
         //println!("Step {:?}:", i);
         if !mcmc.step() {
@@ -73,6 +75,9 @@ fn main() {
             println!("\n::: Interim Tree (Step {}) :::\n{}", i, interim_tree);
         }
 
+        if i > 1_000_000 && i % 1_003 == 0 {
+            summary.snapshot(&mcmc.params.tree.tree);
+        }
     }
 
     println!("\n=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
@@ -82,8 +87,8 @@ fn main() {
     println!("Final Root Log Likelihood: {}\n", mcmc.last_log_likelihood);
     println!("::: Final Params :::\n{:?}\n{:?}", &mcmc.params.traits, &mcmc.params.tree.prior);
 
-    let final_tree = fitzroy::tree::write_newick(&mcmc.params.tree.tree, &config.model.tree.data);
-    println!("\n::: Final Tree :::\n{}", final_tree);
+    let mcc = fitzroy::tree::write_newick(&summary.mcc_tree(), &config.model.tree.data);
+    println!("\n::: MCC Tree :::\n{}", mcc);
 
     println!("\n=-=-= End Dyr Runlog =-=-=");
 }
