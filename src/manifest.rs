@@ -1,3 +1,7 @@
+// =-=-=-=-= manifest.rs =-=-=-=-=
+// This file parses manifest files and builds run configurations from them
+
+
 use serde::Deserialize;
 use std::collections::HashMap;
 use std::fs;
@@ -6,6 +10,10 @@ use fitzroy::*;
 use fitzroy::util::PriorDist;
 
 use crate::DyrConfig;
+
+// We use `serde` to automatically deserialise from TOML into a `Manifest` 
+// :: We maintain a deliberate distinction between the structures we
+// :: deserialise into and `DyrConfig`, our internal config struct
 
 #[derive(Deserialize, Debug)]
 pub struct MData {
@@ -52,13 +60,28 @@ pub struct Manifest {
 }
 
 impl Manifest {
+    // `Manifest` -> `DyrConfig`
     pub fn build_config(&self) -> Result<DyrConfig, ()> {
-        let nexstr = fs::read_to_string(&self.data.traits).unwrap();
+
+        // Load NEXUS data from file specified in manifest 
+        let nexstr = match fs::read_to_string(&self.data.traits) {
+            Ok(s) => s,
+            Err(_) => { eprintln!("Could not read NEXUS file"); return Err(()); },
+        };
+
+        // Parse NEXUS data with `fitzroy` parser
         let trait_data = match fitzroy::nexus::parse(&nexstr) {
             Ok(nexus) => { nexus.data.unwrap() },
             Err(msg) => { eprintln!("{}", msg); return Err(()); },
         };
 
+        // Convert binary trait data into tip partial likelihoods
+        let tips = match trait_data.binary_into_partials() {
+            Some(t) => t,
+            None => { eprintln!("Could not build tip partials"); return Err(()); },
+        };
+
+        // Build tree prior config; we support Uniform { high, low } and Coalescent { num_intervals }
         let tree_prior = match self.priors.tree.0.as_ref() {
             "Uniform" => {
                 let params = &self.priors.tree.1;
@@ -73,13 +96,13 @@ impl Manifest {
             _ => unimplemented!(),
         };
 
-        let tips = trait_data.binary_into_partials().unwrap();
-
+        // Build mapping of tip names to ids
         let mut name_ids = HashMap::new();
         for (i, (s, _)) in tips.iter().enumerate() {
             name_ids.insert(s, i+1);
         }
 
+        // Build tip calibration config
         let mut calibrations = vec![];
         for (tip, (low, high)) in &self.calibrations {
             match name_ids.get(tip) {
@@ -88,21 +111,31 @@ impl Manifest {
             }
         }
 
+        // Build clade + ancestry constraint config
+        // :: Constraints may include earlier constraints as subsets
+        // :: Including an ancestry constraint means including the set of
+        // :: both the constraint clade and the ancestral language
+        
         let mut built: Vec<cfg::Constraint> = vec![];
         let mut cons_idxs: HashMap<String, usize> = HashMap::new();
         for constraint in self.constraints.iter() {
             let mut tip_ids = vec![];
+            
+            // Iterate through tags (taxa / constraint names) for this constraint
             for tag in constraint.clade.iter() {
                 match name_ids.get(tag) {
+                    // This tag is a taxon
                     Some(id) => tip_ids.push(*id),
                     None => { 
                         match cons_idxs.get(tag) {
+                            // This tag is an earlier constraint
                             Some(con) => {
                                 tip_ids.extend(&built[*con].tips);
                                 if let Some(tip) = built[*con].ancestor {
                                     tip_ids.push(tip)
                                 }
                             },
+                            // This tag is invalid
                             None => {
                                 eprintln!("Could not understand: {}", tag);
                                 return Err(());
@@ -111,8 +144,13 @@ impl Manifest {
                     },
                 }
             }
+
+            // Store this constraint's name and index so later constraints can include it
             cons_idxs.insert(constraint.name.clone(), built.len());
+            
+            // Add this constraint to the configuration
             if let Some(tag) = constraint.ancestor.as_ref() {
+                // Ancestors must be taxa, not other constraints
                 if let Some(id) = name_ids.get(tag) {
                     built.push(cfg::Constraint::ancestry_constraint(tips.len(), *id, tip_ids));
                 }
@@ -126,6 +164,7 @@ impl Manifest {
             }
         }
 
+        // The `TreeModel` is the tree prior + calibrations + constraints, and the `TreeData` 
         let tree_model = cfg::TreeModel {
             prior: tree_prior,
             data: tree::TreeData::from_tips(trait_data.num_traits().unwrap(), tips),
@@ -133,19 +172,25 @@ impl Manifest {
             constraints: built,
         };
 
+        // The `TraitsModel` is the priors on substitution model variables
         let traits_model = cfg::TraitsModel {
-            num_traits: PriorDist::Reciprocal,
+            // For ascertainment bias correction, unimplemented
+            num_traits: PriorDist::Reciprocal, 
+             
             subst: cfg::SubstitutionModel::BinaryGTR {
                 pi_one: PriorDist::Uniform { low: 0.0, high: 1.0 }
             },
-            //base: PriorDist::Exponential { l: 83_000.0 }, /* rama */
+             
             base: PriorDist::Reciprocal,
+            //base: PriorDist::Exponential { l: 83_000.0 }, /* rama */
+             
             asrv: cfg::ASRV {
                 enabled: true,
                 shape: PriorDist::Exponential { l: 2.5 },
                 // shape: PriorDist::Exponential { l: 1.0 }, /* rama */
                 ncats: 4,
             },
+
             abrv: cfg::ABRV {
                 enabled: true,
                 shape: PriorDist::Exponential { l: 2.5 },
@@ -153,6 +198,7 @@ impl Manifest {
             },
         };
 
+        // The built config is the fitzroy `Configuration` and the chain length 
         Ok(DyrConfig {
             steps: self.mcmc.steps,
             model: cfg::Configuration {
