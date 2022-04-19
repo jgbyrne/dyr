@@ -171,7 +171,7 @@ tree = ["Coalescent", [5.0]]
 #tree = ["Uniform", [4000, 25000]]
 
 [mcmc]
-steps = 5_000_000
+steps = 24_000_000
 print = 10_000
 dump  = 10_000
 debug = true

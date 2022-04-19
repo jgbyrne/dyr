@@ -138,16 +138,18 @@ impl Manifest {
             subst: cfg::SubstitutionModel::BinaryGTR {
                 pi_one: PriorDist::Uniform { low: 0.0, high: 1.0 }
             },
-            //base: PriorDist::Exponential { l: 10000.0 }, /* rama */
+            //base: PriorDist::Exponential { l: 83_000.0 }, /* rama */
             base: PriorDist::Reciprocal,
             asrv: cfg::ASRV {
                 enabled: true,
                 shape: PriorDist::Exponential { l: 2.5 },
+                // shape: PriorDist::Exponential { l: 1.0 }, /* rama */
                 ncats: 4,
             },
             abrv: cfg::ABRV {
                 enabled: true,
                 shape: PriorDist::Exponential { l: 2.5 },
+                // shape: PriorDist::Exponential { l: 200.0 }, /* rama */
             },
         };
 

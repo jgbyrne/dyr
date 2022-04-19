@@ -75,7 +75,7 @@ fn main() {
             println!("\n::: Interim Tree (Step {}) :::\n{}", i, interim_tree);
         }
 
-        if i > 1_000_000 && i % 1_003 == 0 {
+        if i > 14_000_000 && i % 1000 == 3 {
             summary.snapshot(&mcmc.params.tree.tree);
         }
     }
@@ -88,7 +88,7 @@ fn main() {
     println!("::: Final Params :::\n{:?}\n{:?}", &mcmc.params.traits, &mcmc.params.tree.prior);
 
     let mcc = fitzroy::tree::write_newick(&summary.mcc_tree(), &config.model.tree.data);
-    println!("\n::: MCC Tree :::\n{}", mcc);
+    println!("\n::: MCC Tree ({} snapshots) :::\n{}", &summary.snapshots, mcc);
 
     println!("\n=-=-= End Dyr Runlog =-=-=");
 }
