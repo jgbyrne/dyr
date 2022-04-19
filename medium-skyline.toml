@@ -1,5 +1,5 @@
 [data]
-traits = "broad1.nex"
+traits = "medium1.nex"
 
 [calibrations]
 Hittite             = [3500, 3600]
@@ -12,33 +12,26 @@ Latin               = [2100, 2200]
 Cornish             = [ 300,  400]
 Old_High_German     = [1000, 1100]
 Tocharian_B         = [1200, 1500]
-Tocharian_A         = [1200, 1500]
-Old_Prussian        = [ 500,  600]
 Avestan             = [2450, 2550]
 Gothic              = [1625, 1675]
 Old_West_Norse      = [ 750,  850]
 Old_Church_Slavic   = [ 950, 1050]
-Sogdian             = [1200, 1400]
 
 [[constraints]]
 name = "Inner"
-clade = ["Old_Irish", "Irish", "Scots_Gaelic", "Welsh", "Breton", "Cornish", "Latin", "Nuorese", "Cagliari", "Romanian", "Arumanian", "Catalan", "Portuguese", "Spanish", "French", "Provencal", "Walloon", "Ladin", "Romansh", "Friulian", "Italian", "Gothic", "Old_West_Norse", "Icelandic", "Faroese", "Norwegian", "Swedish", "Danish", "Old_English", "English", "Frisian", "Old_High_German", "German", "Luxembourgish", "Swiss_German", "Dutch", "Flemish", "Afrikaans", "Tosk", "Arvanitika", "Ancient_Greek", "Modern_Greek", "Classical_Armenian", "Eastern_Armenian", "Adapazar", "Old_Prussian", "Lithuanian", "Latvian", "Czech", "Slovak", "Polish", "Lower_Sorbian", "Upper_Sorbian", "Ukrainian", "Belarusian", "Russian", "Slovenian", "Macedonian", "Bulgarian", "Serbian", "Old_Church_Slavic", "Avestan", "Pashto", "Waziri", "Tajik", "Persian", "Sogdian", "Wakhi", "Baluchi", "Kurdish", "Zazaki", "Shughni", "Sariqoli", "Digor_Ossetic", "Vedic_Sanskrit", "Nepali", "Assamese", "Oriya", "Bengali", "Bihari", "Marwari", "Hindi", "Urdu", "Sindhi", "Lahnda", "Panjabi", "Gujarati", "Marathi", "Kashmiri", "Singhalese", "Romani"]
+clade = ["Old_Irish", "Irish", "Scots_Gaelic", "Welsh", "Breton", "Cornish", "Latin", "Nuorese", "Cagliari", "Romanian", "Catalan", "Portuguese", "Spanish", "French", "Provencal", "Walloon", "Ladin", "Romansh", "Friulian", "Italian", "Gothic", "Old_West_Norse", "Icelandic", "Faroese", "Norwegian", "Swedish", "Danish", "Old_English", "English", "Frisian", "Old_High_German", "German", "Luxembourgish", "Swiss_German", "Dutch", "Flemish", "Afrikaans", "Tosk", "Arvanitika", "Ancient_Greek", "Modern_Greek", "Classical_Armenian", "Eastern_Armenian", "Adapazar", "Lithuanian", "Latvian", "Czech", "Slovak", "Polish", "Upper_Sorbian", "Ukrainian", "Belarusian", "Russian", "Slovenian", "Macedonian", "Bulgarian", "Serbian", "Old_Church_Slavic", "Avestan", "Pashto", "Waziri", "Tajik", "Persian", "Baluchi", "Digor_Ossetic", "Vedic_Sanskrit", "Nepali", "Assamese", "Oriya", "Bengali", "Bihari", "Hindi", "Urdu", "Lahnda", "Panjabi", "Gujarati", "Marathi", "Kashmiri", "Singhalese", "Romani"]
 
 [[constraints]]
 name = "Nuclear"
-clade = ["Inner", "Tocharian_A", "Tocharian_B"]
-
-[[constraints]]
-name = "East_Baltic"
-clade = ["Latvian", "Lithuanian"]
+clade = ["Inner", "Tocharian_B"]
 
 [[constraints]]
 name = "Baltic"
-clade = ["Old_Prussian", "East_Baltic"]
+clade = ["Latvian", "Lithuanian"]
 
 [[constraints]]
 name = "West_Slavic"
-clade = ["Czech", "Slovak", "Polish", "Upper_Sorbian", "Lower_Sorbian"]
+clade = ["Czech", "Slovak", "Polish", "Upper_Sorbian"]
 
 [[constraints]]
 name = "East_Slavic"
@@ -97,11 +90,11 @@ clade = ["Pashto", "Waziri"]
 
 [[constraints]]
 name = "Iranian"
-clade = ["Avestan", "Persian_Tajik", "Pashto_Waziri", "Sogdian", "Wakhi", "Baluchi", "Kurdish", "Zazaki", "Shughni", "Sariqoli", "Digor_Ossetic"]
+clade = ["Avestan", "Persian_Tajik", "Pashto_Waziri", "Baluchi",  "Digor_Ossetic"]
 
 [[constraints]]
 name = "Indo_Aryan"
-clade = ["Nepali", "Assamese", "Oriya", "Bengali", "Bihari", "Marwari", "Hindi", "Urdu", "Sindhi", "Lahnda", "Panjabi", "Gujarati", "Marathi", "Kashmiri", "Singhalese", "Romani"]
+clade = ["Nepali", "Assamese", "Oriya", "Bengali", "Bihari", "Hindi", "Urdu", "Lahnda", "Panjabi", "Gujarati", "Marathi", "Kashmiri", "Singhalese", "Romani"]
 ancestor = "Vedic_Sanskrit"
 
 [[constraints]]
@@ -109,16 +102,12 @@ name = "Indo_Iranian"
 clade = ["Indo_Aryan", "Iranian"]
 
 [[constraints]]
-name = "Eastern_Romance"
-clade = ["Romanian", "Arumanian"]
-
-[[constraints]]
 name = "Italo_Western_Romance"
 clade = ["Catalan", "Portuguese", "Spanish", "French", "Provencal", "Walloon", "Ladin", "Romansh", "Friulian", "Italian"]
 
 [[constraints]]
 name = "Continental_Romance"
-clade = ["Eastern_Romance", "Italo_Western_Romance"]
+clade = ["Romanian", "Italo_Western_Romance"]
 
 [[constraints]]
 name = "Sardinian"
@@ -169,4 +158,3 @@ steps = 24_000_000
 print = 10_000
 dump  = 10_000
 debug = true
-

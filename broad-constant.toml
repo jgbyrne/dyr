@@ -162,7 +162,7 @@ clade = ["Celtic", "Romance"]
 
 
 [priors]
-tree = ["Coalescent", [5.0]] 
+tree = ["Coalescent", [1.0]] 
 
 [mcmc]
 steps = 24_000_000

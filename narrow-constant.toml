@@ -1,0 +1,102 @@
+[data]
+traits = "narrow1.nex"
+
+[calibrations]
+Hittite             = [3500, 3600]
+Old_Irish           = [1100, 1300]
+Classical_Armenian  = [1300, 1600]
+Ancient_Greek       = [2400, 2500]
+Vedic_Sanskrit      = [3000, 3500]
+Old_English         = [ 950, 1050]
+Latin               = [2100, 2200]
+Old_High_German     = [1000, 1100]
+Tocharian_B         = [1200, 1500]
+Avestan             = [2450, 2550]
+Gothic              = [1625, 1675]
+Old_West_Norse      = [ 750,  850]
+Old_Church_Slavic   = [ 950, 1050]
+
+[[constraints]]
+name = "Inner"
+clade = ["Old_Irish", "Irish", "Scots_Gaelic", "Latin", "Nuorese", "Cagliari", "Romanian", "Catalan", "Portuguese", "Spanish", "French", "Provencal", "Walloon", "Ladin", "Romansh", "Friulian", "Italian", "Gothic", "Old_West_Norse", "Icelandic", "Faroese", "Norwegian", "Old_English", "English", "Old_High_German", "German", "Luxembourgish", "Swiss_German", "Ancient_Greek", "Modern_Greek", "Classical_Armenian", "Eastern_Armenian", "Adapazar", "Old_Church_Slavic", "Avestan", "Vedic_Sanskrit", "Nepali", "Assamese", "Oriya", "Bengali", "Bihari", "Hindi", "Urdu", "Lahnda", "Panjabi", "Gujarati", "Marathi", "Kashmiri", "Singhalese", "Romani"]
+
+[[constraints]]
+name = "Nuclear"
+clade = ["Inner", "Tocharian_B"]
+
+[[constraints]]
+name = "North_Germanic"
+clade = ["Icelandic", "Faroese", "Norwegian"]
+ancestor = "Old_West_Norse"
+
+[[constraints]]
+name = "Anglo"
+clade = ["English"]
+ancestor = "Old_English"
+
+[[constraints]]
+name = "High_German"
+clade = ["German", "Swiss_German", "Luxembourgish"]
+ancestor = "Old_High_German"
+
+[[constraints]]
+name = "West_Germanic"
+clade = ["High_German", "Anglo"]
+
+[[constraints]]
+name = "Germanic"
+clade = ["Gothic", "West_Germanic", "North_Germanic"]
+
+[[constraints]]
+name = "Indo_Aryan"
+clade = ["Nepali", "Assamese", "Oriya", "Bengali", "Bihari", "Hindi", "Urdu", "Lahnda", "Panjabi", "Gujarati", "Marathi", "Kashmiri", "Singhalese", "Romani"]
+ancestor = "Vedic_Sanskrit"
+
+[[constraints]]
+name = "Indo_Iranian"
+clade = ["Indo_Aryan", "Avestan"]
+
+[[constraints]]
+name = "Italo_Western_Romance"
+clade = ["Catalan", "Portuguese", "Spanish", "French", "Provencal", "Walloon", "Ladin", "Romansh", "Friulian", "Italian"]
+
+[[constraints]]
+name = "Continental_Romance"
+clade = ["Romanian", "Italo_Western_Romance"]
+
+[[constraints]]
+name = "Sardinian"
+clade = ["Nuorese", "Cagliari"]
+
+[[constraints]]
+name = "Romance"
+clade = ["Sardinian", "Continental_Romance"]
+ancestor = "Latin"
+
+[[constraints]]
+name = "Armenian"
+clade = ["Eastern_Armenian", "Adapazar"]
+ancestor = "Classical_Armenian"
+
+[[constraints]]
+name = "Greek"
+clade = ["Modern_Greek"]
+ancestor = "Ancient_Greek" 
+
+[[constraints]]
+name = "Celtic"
+clade = ["Irish", "Scots_Gaelic"]
+ancestor = "Old_Irish"
+
+[[constraints]]
+name = "Italo_Celtic"
+clade = ["Celtic", "Romance"]
+
+[priors]
+tree = ["Coalescent", [1.0]] 
+
+[mcmc]
+steps = 24_000_000
+print = 10_000
+dump  = 10_000
+debug = true
