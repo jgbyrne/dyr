@@ -102,6 +102,7 @@ fn main() {
         }
 
         // After a burn-in period begin taking snapshots of the tree
+        // :: TODO make this configurable in the manifest
         if i > 14_000_000 && i % 1000 == 3 {
             summary.snapshot(&mcmc.params.tree.tree);
         }
