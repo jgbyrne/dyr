@@ -200,11 +200,14 @@ impl Manifest {
 
         // The built config is the fitzroy `Configuration` and the chain length 
         Ok(DyrConfig {
-            steps: self.mcmc.steps,
             model: cfg::Configuration {
                 tree: tree_model,
                 traits: traits_model,
             },
+            steps: self.mcmc.steps,
+            print: self.mcmc.print,
+            dump : self.mcmc.dump,
+            debug: self.mcmc.debug,
         })
     }
 }

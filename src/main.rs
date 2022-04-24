@@ -17,8 +17,11 @@ use std::process;
 use fitzroy::*;
 
 pub struct DyrConfig {
-    pub steps: usize,
     pub model: cfg::Configuration,
+    pub steps: usize,
+    pub print: usize,
+    pub dump : usize,
+    pub debug: bool,
 }
 
 fn die(msg: &str) -> ! {
@@ -54,7 +57,7 @@ fn main() {
     println!("Initialising Run: '{}' for {} steps\n", &manpath, config.steps);
     
     println!("::: Initial Params :::\n{:?}\n{:?}", &mcmc.params.traits, &mcmc.params.tree.prior);
-    if manifest.mcmc.debug {
+    if config.debug {
         let initial_tree = fitzroy::tree::write_newick(&mcmc.params.tree.tree, &config.model.tree.data);
         println!("\n::: Initial Tree :::\n{}", initial_tree);
     }
@@ -77,12 +80,12 @@ fn main() {
         }
 
         // Every `print` steps output current chain likelihood
-        if i % manifest.mcmc.print == 0 {
+        if i % config.print == 0 {
             let log_posterior_likelihood = mcmc.log_posterior_likelihood();
             println!("Step {:<10}: {:<30} | {:<30}", i ,&mcmc.last_log_likelihood, log_posterior_likelihood);
 
             // If `debug` enabled output information about mcmc moves and prior likelihoods
-            if manifest.mcmc.debug {
+            if config.debug {
                 println!();
                 println!("{}", &mcmc.propose.move_ledger());
                 println!();
@@ -91,7 +94,7 @@ fn main() {
         }
 
         // Every `dump` steps output current chain parameterisation
-        if (i + 1) % manifest.mcmc.dump == 0 {
+        if (i + 1) % config.dump == 0 {
             println!("::: Interim Params (Step {}) :::\n{:?}\n{:?}", i, &mcmc.params.traits, &mcmc.params.tree.prior);
 
             let interim_tree = fitzroy::tree::write_newick(&mcmc.params.tree.tree, &config.model.tree.data);
@@ -99,6 +102,7 @@ fn main() {
         }
 
         // After a burn-in period begin taking snapshots of the tree
+        // :: TODO make this configurable in the manifest
         if i > 28_000_000 && i % 1000 == 3 {
             summary.snapshot(&mcmc.params.tree.tree);
         }
